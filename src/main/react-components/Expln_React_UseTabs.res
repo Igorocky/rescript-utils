@@ -8,6 +8,7 @@ type tab<'a> = {
     id:tabId,
     label: string,
     closable: bool,
+    color:option<string>,
     data: 'a
 }
 
@@ -19,7 +20,7 @@ type state<'a> = {
 }
 
 type tabMethods<'a> = {
-    addTab: (~label:string, ~closable:bool, ~data:'a, ~doOpen:bool=?, ()) => promise<tabId>,
+    addTab: (~label:string, ~closable:bool, ~color:string=?, ~data:'a, ~doOpen:bool=?, ()) => promise<tabId>,
     openTab: tabId => unit,
     removeTab: tabId => unit,
     tabs: array<tab<'a>>,
@@ -44,9 +45,9 @@ let getNextId = st => {
 
 let getTabs = (st:state<'a>) => st.tabs
 
-let addTab = (st, ~label:string, ~closable:bool, ~data:'a, ~doOpen:bool=false, ()) => {
+let addTab = (st, ~label:string, ~closable:bool, ~color:option<string>=?, ~data:'a, ~doOpen:bool=false, ()) => {
     let (st, newId) = st->getNextId
-    let newTabs = st.tabs->Js_array2.concat([{id:newId, label, closable, data}])
+    let newTabs = st.tabs->Js_array2.concat([{id:newId, label, closable, color, data}])
     let newActiveTabId = if (newTabs->Js_array2.length == 1) {
         newId
     } else {
@@ -110,9 +111,9 @@ let removeTab = (st:state<'a>, tabId):state<'a> => {
 let useTabs = ():tabMethods<'a> => {
     let (state, setState) = React.useState(createEmptyState)
 
-    let addTab = (~label:string, ~closable:bool, ~data:'a, ~doOpen:bool=false, ()):promise<tabId> => promise(rlv => {
+    let addTab = (~label:string, ~closable:bool, ~color:option<string>=?, ~data:'a, ~doOpen:bool=false, ()):promise<tabId> => promise(rlv => {
         setState(prev => {
-            let (st, tabId) = prev->addTab(~label, ~closable, ~data, ~doOpen, ())
+            let (st, tabId) = prev->addTab(~label, ~closable, ~color?, ~data, ~doOpen, ())
             rlv(tabId)
             st
         })
@@ -131,30 +132,54 @@ let useTabs = ():tabMethods<'a> => {
         if (tabs->Js_array2.length == 0) {
             React.null
         } else {
-            <Col>
-                <Tabs key=activeTabId value=activeTabId variant=#scrollable onChange={(_,id)=>openTab(id)} >
-                    {React.array(
-                        tabs->Js_array2.map(tab => {
-                            <Tab key=tab.id value=tab.id label={
+            <Tabs
+                value=activeTabId
+                variant=#scrollable
+                onChange={(_,id)=>openTab(id)}
+                style=ReactDOM.Style.make(
+                    ~minHeight="25px",
+                    ()
+                )
+            >
+                {React.array(
+                    tabs->Js_array2.map(tab => {
+                        <Tab
+                            key=tab.id
+                            value=tab.id
+                            label={
                                 if (tab.closable) {
                                     <span style=ReactDOM.Style.make(~textTransform="none", ())>
-                                        {React.string(tab.label)}
-                                        <IconButton component="div" 
-                                                    onClick={evt => {
-                                                        ReactEvent.Synthetic.stopPropagation(evt)
-                                                        removeTab(tab.id)
-                                                    }} >
+                                        <span style=ReactDOM.Style.make(~marginRight="10px", ())>
+                                            {React.string(tab.label)}
+                                        </span>
+                                        <IconButton
+                                            component="div"
+                                            onClick={evt => {
+                                                ReactEvent.Synthetic.stopPropagation(evt)
+                                                removeTab(tab.id)
+                                            }}
+                                            style=ReactDOM.Style.make(
+                                                ~padding="0px",
+                                                ()
+                                            )
+                                        >
                                             <Icons.Clear fontSize="small"  />
                                         </IconButton>
                                     </span>
                                 } else {
                                     React.string(tab.label)
                                 }
-                            }/>
-                        })
-                    )}
-                </Tabs>
-            </Col>
+                            }
+                            style=ReactDOM.Style.make(
+                                ~minHeight="25px",
+                                ~padding="3px",
+                                ~backgroundColor=?(tab.color),
+                                ()
+                            )
+                        />
+                    })
+                )}
+            </Tabs>
         }
     }
 

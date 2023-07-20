@@ -4,7 +4,7 @@
   "files": [
     "README.md",
     "Changes.md",
-    "LICENSE",
+    "LICENSE.txt",
     "bsconfig.json",
     "src/main/**/*.res",
     "src/main/**/*.resi",
