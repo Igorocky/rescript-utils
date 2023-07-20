@@ -21,7 +21,6 @@ let evt2bool: ('a => 'b, ReactEvent.Form.t) => 'b
 external reElem2Obj: reElem => Js.Nullable.t<{..}> = "%identity"
 
 let copyToClipboard: string => promise<unit>
-let getAvailWidth: () => int
 
 type mouseButton = Left | Middle | Right
 type clickCallback
