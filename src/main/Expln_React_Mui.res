@@ -39,19 +39,8 @@ module ThemeProvider = Expln_React_ThemeProvider
 module TextFileReader = Expln_React_TextFileReader
 
 module Icons = {
-
-  module Delete = {
-    @module("@mui/icons-material/Delete") @react.component
-    external make: () => React.element = "default"
-  }
-
-  module Clear = {
-    @module("@mui/icons-material/Clear") @react.component
-    external make: (~fontSize:string=?) => React.element = "default"
-  }
-
-  module BrightnessLow = {
-    @module("@mui/icons-material/BrightnessLow") @react.component
-    external make: () => React.element = "default"
-  }
+  module Delete = { @module("@mui/icons-material/Delete") @react.component external make: () => React.element = "default" }
+  module Clear = { @module("@mui/icons-material/Clear") @react.component external make: (~fontSize:string=?) => React.element = "default" }
+  module CancelOutlined = { @module("@mui/icons-material/CancelOutlined") @react.component external make: () => React.element = "default" }
+  module BrightnessLow = { @module("@mui/icons-material/BrightnessLow") @react.component external make: () => React.element = "default" }
 }
