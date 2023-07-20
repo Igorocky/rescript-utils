@@ -1,0 +1,45 @@
+{
+  "name": "@expln/utils",
+  "version": "0.0.21",
+  "files": [
+    "README.md",
+    "Changes.md",
+    "LICENSE",
+    "bsconfig.json",
+    "src/main/**/*.res",
+    "src/main/**/*.resi",
+    "src/main/react-mui-components/Dialog.js",
+    "src/main/react-mui-components/Menu.js"
+  ],
+  "scripts": {
+    "clean-and-compile-with-deps": "npm run clean && npm run compile-with-deps",
+    "compile": "rescript",
+    "compile-with-deps": "rescript build -with-deps",
+    "compile-with-deps-and-test": "rescript build -with-deps && mocha src/test/**/*.js",
+    "compile-test": "rescript && mocha src/test/**/*.js",
+    "clean": "rescript clean -with-deps && echo Cleaning completed.",
+    "start": "rescript build -w"
+  },
+  "keywords": [
+    "rescript"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "rescript": "^10.1.4"
+  },
+  "devDependencies": {
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
+    "@fontsource/roboto": "^4.5.7",
+    "@mui/icons-material": "^5.11.0",
+    "@mui/material": "^5.11.5",
+    "@rescript/react": "^0.11.0",
+    "@testing-library/jest-dom": "^5.16.4",
+    "@testing-library/react": "^14.0.0",
+    "@testing-library/user-event": "^14.4.3",
+    "mocha": "^10.2.0",
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0"
+  }
+}
