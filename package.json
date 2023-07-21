@@ -9,7 +9,8 @@
     "src/main/**/*.res",
     "src/main/**/*.resi",
     "src/main/react-mui-components/Dialog.js",
-    "src/main/react-mui-components/Menu.js"
+    "src/main/react-mui-components/Menu.js",
+    "src/main/react-components/Expln_AutocompleteVirtualized.js"
   ],
   "scripts": {
     "clean-and-compile-with-deps": "npm run clean && npm run compile-with-deps",
